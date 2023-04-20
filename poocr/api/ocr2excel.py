@@ -42,10 +42,11 @@ def VatInvoiceOCR2Excel(input_path, output_path=None, output_excel='VatInvoiceOC
             f'输出结果名：output_excel参数，必须以xls或者xlsx结尾，您的输入:{output_excel}有误，请修改后重新运行')
     res_df = []  # 装全部识别的结果
     for vat_img in simple_progress(vat_img_files):
-        try:
-            api_res = VatInvoiceOCR(img_path=str(vat_img), img_url=img_url, configPath=configPath)
-        except:
-            continue
+        if vat_img.endswith('.jpg') or vat_img.endswith('.png') or vat_img.endswith('.jpeg') or vat_img.endswith('.bmp'):
+            try:
+                api_res = VatInvoiceOCR(img_path=str(vat_img), img_url=img_url, configPath=configPath)
+            except:
+                continue
         api_res_json = json.loads(str(api_res))
         VatInvoiceInfos = api_res_json['VatInvoiceInfos']
         dict_pandas = {}  # 存放一行数据
